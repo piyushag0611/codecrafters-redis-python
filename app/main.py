@@ -1,5 +1,5 @@
 import socket  # noqa: F401
-
+import threading
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -8,8 +8,14 @@ def main():
     # Uncomment the code below to pass the first stage
     #
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
-    conn, addr = server_socket.accept() # wait for client
+    
+    while(True):
+        conn, _ = server_socket.accept() # wait for client
+        thread = threading.Thread(target = handle_conn, args=(conn,))
+        thread.start()
 
+
+def handle_conn(conn):
 
     while(True):
         request = conn.recv(1024).decode()
@@ -21,7 +27,7 @@ def main():
         response = "+PONG\r\n"
         responseBytes = response.encode()
         conn.sendall(responseBytes)
-        
+
     conn.close()
 
 
