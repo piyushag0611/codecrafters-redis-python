@@ -14,7 +14,8 @@ def main():
     print(request)
 
     response = "+PONG\r\n"
-    conn.sendall(response)
+    responseBytes = response.encode()
+    conn.sendall(responseBytes)
     conn.close()
 
 
