@@ -1,5 +1,6 @@
 import socket  # noqa: F401
 import threading
+from .respParser import parser
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -19,12 +20,23 @@ def handle_conn(conn):
 
     while(True):
         request = conn.recv(1024).decode()
-        print(request)
+
+        (commandName, requestParams) = parser(request)
 
         if request is None:
             break
 
-        response = "+PONG\r\n"
+        if commandName == "ping":
+
+            response = "+PONG\r\n"
+        
+        elif commandName == "echo":
+
+            response = f"${len(requestParams[0])}\r\n{requestParams[0]}\r\n"
+        
+        else:
+            pass
+
         responseBytes = response.encode()
         conn.sendall(responseBytes)
 
