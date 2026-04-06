@@ -1,6 +1,7 @@
 import socket  # noqa: F401
 import threading
 from .respParser import parser, formBulkString
+from .redisKVStore import set_key, get_key
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -15,9 +16,6 @@ def main():
 
 
 def handle_conn(conn):
-
-
-    redisKVStore = {}
 
     while(True):
 
@@ -38,7 +36,7 @@ def handle_conn(conn):
 
         elif commandName == "get":
 
-            value = redisKVStore.get(requestParams[0])
+            value = get_key(requestParams[0])
             if (value == None):
                 response = "$-1\r\n"
             else:
@@ -49,7 +47,21 @@ def handle_conn(conn):
             if (len(requestParams) >= 2):
                 key = requestParams[0]
                 value = requestParams[1]
-                redisKVStore[key] = value
+                timeValue = None
+                if (len(requestParams) > 2):
+                    
+                    for i in range(2, len(requestParams), 2):
+                        optionName = requestParams[i].lower()
+                        if optionName == "ex":
+                            timeValue = 1000 * int(requestParams[i+1])
+                            break
+                        elif optionName == "px":
+                            timeValue = int(requestParams[i+1])
+                            break
+                        else:
+                            pass
+
+                set_key(key, value, timeValue)
 
                 response = "+OK\r\n"
             
