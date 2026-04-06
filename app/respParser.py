@@ -9,6 +9,8 @@ def parser(request):
         itemIndex += 2
     return (reqItems[2].lower(), echoItems)
 
+def formBulkString(item):
 
+    return f"${len(item)}\r\n{item}\r\n"
 
 

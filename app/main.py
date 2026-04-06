@@ -1,13 +1,11 @@
 import socket  # noqa: F401
 import threading
-from .respParser import parser
-
+from .respParser import parser, formBulkString
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
 
-    # Uncomment the code below to pass the first stage
-    #
+    
     server_socket = socket.create_server(("localhost", 6379), reuse_port=True)
     
     while(True):
@@ -18,7 +16,11 @@ def main():
 
 def handle_conn(conn):
 
+
+    redisKVStore = {}
+
     while(True):
+
         request = conn.recv(1024).decode()
 
         (commandName, requestParams) = parser(request)
@@ -32,7 +34,29 @@ def handle_conn(conn):
         
         elif commandName == "echo":
 
-            response = f"${len(requestParams[0])}\r\n{requestParams[0]}\r\n"
+            response = formBulkString(requestParams[0])
+
+        elif commandName == "get":
+
+            value = redisKVStore.get(requestParams[0])
+            if (value == None):
+                response = "$-1\r\n"
+            else:
+                response = formBulkString(value)
+        
+        elif commandName == "set":
+
+            if (len(requestParams) >= 2):
+                key = requestParams[0]
+                value = requestParams[1]
+                redisKVStore[key] = value
+
+                response = "+OK\r\n"
+            
+            else:
+                response = "+FAIL\r\n"
+
+
         
         else:
             pass
