@@ -20,7 +20,7 @@ def handle_conn(conn):
     while(True):
 
         request = conn.recv(1024).decode()
-
+        print(request)
         (commandName, requestParams) = parser(request)
 
         if request is None:
@@ -50,6 +50,10 @@ def handle_conn(conn):
             
             current_len = append_items(requestParams[0], requestParams[1:])
             response = f":{current_len}\r\n"
+        
+        elif commandName == "lrange":
+
+            key = requestParams[0]
         
         elif commandName == "set":
 
