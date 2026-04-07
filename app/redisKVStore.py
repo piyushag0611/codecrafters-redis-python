@@ -17,8 +17,9 @@ def get_key(key):
         return None
     return value
 
-def append_item(key, item):
+def append_items(key, items):
 
     value, _ = store[key]
-    value.append(item)
+    for item in items:
+        value.append(item)
     return len(value)
