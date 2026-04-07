@@ -16,3 +16,9 @@ def get_key(key):
         del store[key]  # lazy delete
         return None
     return value
+
+def append_item(key, item):
+
+    value, _ = store[key]
+    value.append(item)
+    return len(value)
