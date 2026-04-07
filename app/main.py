@@ -49,7 +49,7 @@ def handle_conn(conn):
                 set_key(requestParams[0], [])
             
             current_len = append_item(requestParams[0], requestParams[1])
-            response = f"{current_len}\r\n"
+            response = f":{current_len}\r\n"
         
         elif commandName == "set":
 
