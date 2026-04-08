@@ -27,10 +27,9 @@ def append_items(key, items):
 def get_items(key, start, stop):
 
     value = get_key(key)
-    start = recalibrate(start, len(value))
-    stop = recalibrate(stop, len(value))
-
     try:
+        start = recalibrate(start, len(value))
+        stop = recalibrate(stop, len(value))
         if (value == None or start > stop or start > len(value)-1):
             return []
         else:
