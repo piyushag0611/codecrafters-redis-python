@@ -27,10 +27,8 @@ def append_items(key, items):
 def prepend_items(key, items):
 
     value, _ = store[key]
-    print(key)
-    print(value)
-    value = items[::-1] + value
-    print(value)
+    for item in items:
+        value.insert(0, item)
     return len(value)
 
 def get_items(key, start, stop):
