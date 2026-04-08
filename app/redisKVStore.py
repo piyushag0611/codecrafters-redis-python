@@ -27,6 +27,9 @@ def append_items(key, items):
 def get_items(key, start, stop):
 
     value = get_key(key)
+    start = recalibrate(start, len(value))
+    stop = recalibrate(stop, len(value))
+
     try:
         if (value == None or start > stop or start > len(value)-1):
             return []
@@ -34,3 +37,14 @@ def get_items(key, start, stop):
             return value[start:min(stop+1, len(value))]
     except:
         return []
+    
+
+def recalibrate(index, length):
+
+    if (index < 0 and index >= -1*length):
+        index += length
+    elif(index < -1*length):
+        index = 0
+    else:
+        pass
+    return index
