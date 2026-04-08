@@ -24,6 +24,13 @@ def append_items(key, items):
         value.append(item)
     return len(value)
 
+def prepend_items(key, items):
+
+    value, _ = store[key]
+    for item in items[::-1]:
+        value.append(item)
+    return len(value)
+
 def get_items(key, start, stop):
 
     value = get_key(key)

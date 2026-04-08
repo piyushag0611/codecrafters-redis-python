@@ -1,7 +1,7 @@
 import socket  # noqa: F401
 import threading
 from .respParser import parser, formBulkString
-from .redisKVStore import set_key, get_key, append_items, get_items
+from .redisKVStore import *
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!")
@@ -48,6 +48,15 @@ def handle_conn(conn):
                 set_key(requestParams[0], [])
             
             current_len = append_items(requestParams[0], requestParams[1:])
+            response = f":{current_len}\r\n"
+
+        elif commandName == "lpush":
+
+            value = get_key(requestParams[0])
+            if (value == None):
+                set_key(requestParams[0], [])
+            
+            current_len = prepend_items(requestParams[0], requestParams[1:])
             response = f":{current_len}\r\n"
         
         elif commandName == "lrange":
