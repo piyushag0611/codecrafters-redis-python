@@ -86,7 +86,7 @@ def handle_conn(conn):
             if (numElements == 1 and len(itemsRemoved) == 1):
                 response = formBulkString(itemsRemoved[0])
             elif(len(itemsRemoved) > 1):
-                response = f"*{len(items)}\r\n"
+                response = f"*{len(itemsRemoved)}\r\n"
                 for item in itemsRemoved:
                     response += formBulkString(item)
             else:
