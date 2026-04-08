@@ -31,6 +31,16 @@ def prepend_items(key, items):
         value.insert(0, item)
     return len(value)
 
+def remove_items(key, numElements):
+
+    value = get_key(key)
+    if (value is None or not isinstance(value, list)):
+        return []
+    numElements = min(numElements, len(value))
+    removedItems = value[:numElements]
+    del value[:numElements]
+    return removedItems
+
 def get_items(key, start, stop):
 
     value = get_key(key)
