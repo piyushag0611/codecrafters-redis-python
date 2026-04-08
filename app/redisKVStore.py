@@ -28,6 +28,7 @@ def prepend_items(key, items):
 
     value, _ = store[key]
     value = items[::-1] + value
+    print(value)
     return len(value)
 
 def get_items(key, start, stop):
