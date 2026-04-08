@@ -26,7 +26,7 @@ def append_items(key, items):
 
 def get_items(key, start, stop):
 
-    value, _ = get_key(key)
+    value = get_key(key)
     try:
         if (value == None or start > stop or start > len(value)-1):
             return []
