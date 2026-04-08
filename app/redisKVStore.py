@@ -31,6 +31,6 @@ def get_items(key, start, stop):
         if (value == None or start > stop or start > len(value)-1):
             return []
         else:
-            return value[start:min(stop+1, len(value)-1)]
+            return value[start:min(stop+1, len(value))]
     except:
         return []
