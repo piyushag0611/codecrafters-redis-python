@@ -69,7 +69,14 @@ def handle_conn(conn):
             for item in items:
                 response += formBulkString(item)
 
+        elif commandName == "llen":
 
+            value = get_key(requestParams[0])
+            if (value == None or not isinstance(value, list)):
+                _length = 0
+            else:
+                _length = len(value)
+            response = f":{_length}\r\n"
 
         
         elif commandName == "set":
