@@ -21,6 +21,11 @@ def Xadd(requestParams):
     key = requestParams[0]
     elementId = requestParams[1]
     [time, sequenceNum] = [int(num) for num in elementId.split("-")]
+    
+    if (time == 0 and sequenceNum == 0):
+        error = "-ERR The ID specified in XADD must be greater than 0-0\r\n"
+        return error
+    
     elementDict = {"id":elementId}
     i = 2
     while (i < len(requestParams)):
@@ -30,9 +35,7 @@ def Xadd(requestParams):
     value = get_key(key)
     if (value is None):
         set_key(key, [])
-        if (time == 0 and sequenceNum == 0):
-            error = "-ERR The ID specified in XADD must be greater than 0-0\r\n"
-            return error
+        
     if (isinstance(value, list) and len(value) > 0):
         prev_elem = value[-1]
         print(prev_elem)
