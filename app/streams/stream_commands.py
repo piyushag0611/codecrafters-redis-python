@@ -1,5 +1,6 @@
 from ..redisKVStore import *
 from ..respParser import *
+from time import time
 
 def Type(requestParams):
 
@@ -20,12 +21,14 @@ def Xadd(requestParams):
 
     key = requestParams[0]
     elementId = requestParams[1]
-    splitParts = elementId.split("-")
-    time = int(splitParts[0])
-    if (splitParts[1] == "*"):
-        sequenceNum = None
+    sequenceNum = None
+    if (elementId == "*"):
+        time = int(time.time() * 1000)
     else:
-        sequenceNum = int(splitParts[1])
+        splitParts = elementId.split("-")
+        time = int(splitParts[0])
+        if (splitParts[1] != "*"):
+            sequenceNum = int(splitParts[1])
  
     if (time == 0 and sequenceNum == 0):
         error = "-ERR The ID specified in XADD must be greater than 0-0\r\n"
