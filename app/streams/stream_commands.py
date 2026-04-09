@@ -3,7 +3,12 @@ from ..redisKVStore import *
 def Type(requestParams):
 
     value = get_key(requestParams[0])
-    _type = str(type(value))
-    response = f"+{str.lower(_type)}\r\n"
+    if (isinstance(value, str)):
+        _type = "string"
+    elif (isinstance(value, list)):
+        _type = "list"
+    else:
+        _type = "none"
+    response = f"+{_type}\r\n"
     return response
 
