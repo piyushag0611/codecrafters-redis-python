@@ -35,6 +35,7 @@ def Xadd(requestParams):
             return error
     if (isinstance(value, list) and len(value) > 0):
         prev_elem = value[-1]
+        print(prev_elem)
         [prev_time, prev_num] = [int(num) for num in prev_elem.id.split("-")]
         if (prev_time > time or (prev_time == time and prev_num > sequenceNum)):
             error = "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n"
