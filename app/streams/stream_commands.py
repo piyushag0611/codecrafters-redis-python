@@ -57,7 +57,7 @@ def Xadd(requestParams):
             if(prev_time==time):
                 sequenceNum = prev_num + 1
             else:
-                sequenceNum = 1
+                sequenceNum = 0
 
     
     elementId = f"{time}-{sequenceNum}"
