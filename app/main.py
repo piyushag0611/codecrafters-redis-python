@@ -18,7 +18,8 @@ def command_handler(commandName):
         "lrange" : Lrange,
         "llen" : Llen,
         "set" : Set,
-        "type" : Type
+        "type" : Type,
+        "xadd" : Xadd
     }
     return commands[commandName]
 
