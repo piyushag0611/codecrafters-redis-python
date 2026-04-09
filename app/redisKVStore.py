@@ -63,11 +63,9 @@ def get_items(key, start, stop):
 def bl_pop(key, timeout):
 
     value = get_key(key)
-    print("Value State is", value)
     with condition:
         if (value == None or len(value) == 0):
-            condition.wait(timeout=timeout)
-    print(value)
+            condition.wait()
     removedItem = remove_items(key, 1)
     return removedItem
 
