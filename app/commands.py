@@ -79,7 +79,7 @@ def Lpop(requestParams):
 def Blpop(requestParams):
 
     key = requestParams[0]
-    items = bl_pop(key, int(requestParams[1]))
+    items = bl_pop(key, float(requestParams[1]))
     if (len(items) == 0):
         response = "*-1\r\n"
     else:
