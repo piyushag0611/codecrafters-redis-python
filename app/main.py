@@ -1,7 +1,9 @@
 import socket  # noqa: F401
 import threading
-
+from .streams.stream_commands import *
+from .respParser import parser
 from .commands import *
+from .array_commands import *
 
 def command_handler(commandName):
 
@@ -15,7 +17,8 @@ def command_handler(commandName):
         "blpop" : Blpop,
         "lrange" : Lrange,
         "llen" : Llen,
-        "set" : Set
+        "set" : Set,
+        "type" : Type
     }
     return commands[commandName]
 
