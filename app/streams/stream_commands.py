@@ -23,14 +23,14 @@ def Xadd(requestParams):
     elementId = requestParams[1]
     sequenceNum = None
     if (elementId == "*"):
-        time = int(time() * 1000)
+        currTime = int(time() * 1000)
     else:
         splitParts = elementId.split("-")
-        time = int(splitParts[0])
+        currTime = int(splitParts[0])
         if (splitParts[1] != "*"):
             sequenceNum = int(splitParts[1])
  
-    if (time == 0 and sequenceNum == 0):
+    if (currTime == 0 and sequenceNum == 0):
         error = "-ERR The ID specified in XADD must be greater than 0-0\r\n"
         return error
     
@@ -44,7 +44,7 @@ def Xadd(requestParams):
     if (value is None):
         set_key(key, [])
         if (sequenceNum == None):
-            if (time == 0):
+            if (currTime == 0):
                 sequenceNum = 1
             else:
                 sequenceNum = 0
@@ -53,17 +53,17 @@ def Xadd(requestParams):
         prev_elem = value[-1]
         [prev_time, prev_num] = [int(num) for num in prev_elem["id"].split("-")]
         if (sequenceNum !=None):
-            if (prev_time > time or (prev_time == time and prev_num >= sequenceNum)):
+            if (prev_time > currTime or (prev_time == currTime and prev_num >= sequenceNum)):
                 error = "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n"
                 return error
         else:
-            if(prev_time==time):
+            if(prev_time==currTime):
                 sequenceNum = prev_num + 1
             else:
                 sequenceNum = 0
 
     
-    elementId = f"{time}-{sequenceNum}"
+    elementId = f"{currTime}-{sequenceNum}"
     elementDict["id"] = elementId
     append_items(key, [elementDict])
     return formBulkString(elementId)
