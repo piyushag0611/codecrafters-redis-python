@@ -1,6 +1,8 @@
 import time
+import threading
 
 store = {}  # key -> (value, expiry_timestamp or None)
+condition = threading.Condition()
 
 def set_key(key, value, px=None):
     expiry = None
@@ -21,14 +23,18 @@ def append_items(key, items):
 
     value, _ = store[key]
     for item in items:
-        value.append(item)
+        with condition:
+            value.append(item)
+            condition.notify()
     return len(value)
 
 def prepend_items(key, items):
 
     value, _ = store[key]
     for item in items:
-        value.insert(0, item)
+        with condition:
+            value.insert(0, item)
+            condition.notify()
     return len(value)
 
 def remove_items(key, numElements):
@@ -54,6 +60,13 @@ def get_items(key, start, stop):
     except:
         return []
     
+def bl_pop(key, timeout):
+
+    value = get_key(key)
+    if (value == None or len(value) == 0):
+        condition.wait(timeout=timeout)
+    removedItem = remove_items(key, 1)
+    return removedItem
 
 def recalibrate(index, length):
 
