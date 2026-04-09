@@ -1,4 +1,4 @@
-from redisKVStore import *
+from ..redisKVStore import *
 
 def Type(requestParams):
 
