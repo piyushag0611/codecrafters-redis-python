@@ -23,7 +23,7 @@ def Xadd(requestParams):
     elementId = requestParams[1]
     sequenceNum = None
     if (elementId == "*"):
-        time = int(time.time() * 1000)
+        time = int(time() * 1000)
     else:
         splitParts = elementId.split("-")
         time = int(splitParts[0])
