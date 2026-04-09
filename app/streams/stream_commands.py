@@ -40,19 +40,25 @@ def Xadd(requestParams):
     value = get_key(key)
     if (value is None):
         set_key(key, [])
-        if (time == 0):
-            sequenceNum = 1
-        else:
-            sequenceNum = 0
+        if (sequenceNum == None):
+            if (time == 0):
+                sequenceNum = 1
+            else:
+                sequenceNum = 0
         
     if (isinstance(value, list) and len(value) > 0):
         prev_elem = value[-1]
         [prev_time, prev_num] = [int(num) for num in prev_elem["id"].split("-")]
-        if (prev_time > time or (prev_time == time and sequenceNum!=None and prev_num >= sequenceNum)):
-            error = "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n"
-            return error
+        if (sequenceNum !=None):
+            if (prev_time > time or (prev_time == time and prev_num >= sequenceNum)):
+                error = "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n"
+                return error
         else:
-            sequenceNum = prev_num + 1
+            if(prev_time==time):
+                sequenceNum = prev_num + 1
+            else:
+                sequenceNum = 1
+
     
     elementId = f"{time}-{sequenceNum}"
     elementDict["id"] = elementId
